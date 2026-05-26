@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: haywire
+  labels:
+    app: nginx
+    managed-by: portainer-run
+  annotations:
+    portainer-run/git-target-id: 938f1d0e-8042-4664-a1d1-319da2f6ab15
+    portainer-run/git-branch: hoopla
+    portainer-run/git-path: haywire/nginx.yaml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        managed-by: portainer-run
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: haywire
+  labels:
+    app: nginx
+    managed-by: portainer-run
+spec:
+  selector:
+    app: nginx
+  type: NodePort
+  ports:
+    - name: port-80
+      port: 80
+      targetPort: 80
+      protocol: TCP
