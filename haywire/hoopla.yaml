@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hoopla
+  namespace: haywire
+  labels:
+    app: hoopla
+    managed-by: portainer-run
+  annotations:
+    portainer-run/git-target-id: 938f1d0e-8042-4664-a1d1-319da2f6ab15
+    portainer-run/git-branch: main
+    portainer-run/git-path: haywire/hoopla.yaml
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hoopla
+  template:
+    metadata:
+      labels:
+        app: hoopla
+        managed-by: portainer-run
+    spec:
+      containers:
+        - name: app
+          image: nginx:latest
+          imagePullPolicy: Always
